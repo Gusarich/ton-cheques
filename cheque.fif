@@ -1,0 +1,43 @@
+"Asm.fif" include
+// automatically generated from `stdlib.fc` `cheque.fc` 
+PROGRAM{
+  DECLPROC load_hash
+  DECLPROC recv_internal
+  load_hash PROCINLINE:<{
+    // 
+    c4 PUSH	//  _1
+    CTOS	//  ds
+    256 LDU	//  _8 _7
+    DROP	//  hash
+  }>
+  recv_internal PROC:<{
+    //  my_balance msg_value in_msg_full in_msg_body
+    s1 s3 XCHG
+    3 BLKDROP	//  in_msg_full
+    CTOS	//  cs
+    4 LDU	//  flags cs
+    SWAP
+    1 PUSHINT	//  cs flags _10=1
+    AND	//  cs _11
+    IFJMP:<{	//  cs
+      DROP	// 
+    }>	//  cs
+    LDMSGADDR	//  _56 _55
+    DROP	//  sender_address
+    0 PUSHINT	//  sender_address _25=0
+    DUP	//  sender_address _25=0 _26=0
+    22 PUSHINT	//  sender_address _25=0 _26=0 _27=22
+    NEWC	//  sender_address _25=0 _26=0 _27=22 _28
+    6 STU	//  sender_address _25=0 _26=0 _30
+    s0 s3 XCHG2	//  _26=0 _25=0 _30 sender_address
+    STSLICER	//  _26=0 _25=0 _31
+    OVER	//  _26=0 _25=0 _31 _32=0
+    STGRAMS	//  _26=0 _25=0 _33
+    s1 s2 XCHG	//  _25=0 _26=0 _33
+    107 STU	//  _25=0 _47
+    1 STU	//  _49
+    ENDC	//  msg
+    160 PUSHINT	//  msg _51=160
+    SENDRAWMSG
+  }>
+}END>c
