@@ -1,7 +1,6 @@
 (int) load_hash () inline {
-    slice ds = get_data().begin_parse();
-    int hash = ds~load_uint(256);
-    return hash;
+    var ds = get_data().begin_parse();
+    return ds~load_uint(256);
 }
 
 () recv_internal (int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
@@ -13,9 +12,10 @@
     slice sender_address = cs~load_msg_addr();
 
     int correct_hash = load_hash();
-    int hash = in_msg_body~load_uint(256);
+    int hash = in_msg_body.slice_hash();
+    hash~impure_touch();
 
-    throw_unless(correct_hash == hash, 100);
+    throw_unless(100, correct_hash == hash);
 
     var msg = begin_cell()
         .store_uint(0x16, 6)

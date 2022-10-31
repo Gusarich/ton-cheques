@@ -7,23 +7,29 @@ PROGRAM{
     // 
     c4 PUSH	//  _1
     CTOS	//  ds
-    256 LDU	//  _8 _7
-    DROP	//  hash
+    256 LDU	//  _7 _6
+    DROP	//  _3
   }>
   recv_internal PROC:<{
     //  my_balance msg_value in_msg_full in_msg_body
-    s1 s3 XCHG
-    3 BLKDROP	//  in_msg_full
-    CTOS	//  cs
-    4 LDU	//  flags cs
+    s3 POP
+    NIP	//  in_msg_body in_msg_full
+    CTOS	//  in_msg_body cs
+    4 LDU	//  in_msg_body flags cs
     SWAP
-    1 PUSHINT	//  cs flags _10=1
-    AND	//  cs _11
-    IFJMP:<{	//  cs
-      DROP	// 
-    }>	//  cs
-    LDMSGADDR	//  _56 _55
-    DROP	//  sender_address
+    1 PUSHINT	//  in_msg_body cs flags _10=1
+    AND	//  in_msg_body cs _11
+    IFJMP:<{	//  in_msg_body cs
+      2DROP	// 
+    }>	//  in_msg_body cs
+    LDMSGADDR	//  in_msg_body _56 _55
+    DROP	//  in_msg_body sender_address
+    load_hash INLINECALLDICT	//  in_msg_body sender_address correct_hash
+    s0 s2 XCHG	//  correct_hash sender_address in_msg_body
+    HASHSU	//  correct_hash sender_address hash
+    s1 s2 XCHG	//  sender_address correct_hash hash
+    EQUAL	//  sender_address _22
+    100 THROWIFNOT
     0 PUSHINT	//  sender_address _25=0
     DUP	//  sender_address _25=0 _26=0
     22 PUSHINT	//  sender_address _25=0 _26=0 _27=22

@@ -1,1 +1,0 @@
-func -o "cheque.fif" -SPA stdlib.fc cheque.fc

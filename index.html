@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TON Cheques</title>
+    <script src="jquery-3.6.1.min.js"></script>
+    <script src="crypto-js.min.js"></script>
+    <script src="tonweb.js"></script>
+    <script src="deploy.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mulish.css">
+</head>
+<body>
+    <h1>TON Cheques</h1>
+    <div class="new-cheque">
+        <div>
+            Password: <input type="text" name="password" id="password">
+        </div>
+        <div>
+            Value: <input type="text" name="value" id="value">
+        </div>
+        <div>
+            <button class="new-cheque-button" onclick="createCheque()">Create</button>
+        </div>
+    </div>
+</body>
+</html>
