@@ -10,9 +10,10 @@
     <script src="main.js"></script>
     <script>
         async function onLoadFunction () {
-            var buf = new Uint8Array(20)
-            crypto.getRandomValues(buf)
-            $('#password')[0].value = tonweb.utils.bytesToBase64(buf)
+            const queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+            $('#address')[0].value = urlParams.get('address')
+            $('#password')[0].value = urlParams.get('password')
         }
     </script>
     <link rel="stylesheet" href="style.css">
@@ -22,13 +23,13 @@
     <h1>TON Cheques</h1>
     <div class="cheque">
         <div>
+            Address: <input type="text" name="address" id="address">
+        </div>
+        <div>
             Password: <input type="text" name="password" id="password">
         </div>
         <div>
-            Value: <input type="text" name="value" id="value">
-        </div>
-        <div>
-            <button class="cheque-button" onclick="createCheque()">Create</button>
+            <button class="cheque-button" onclick="claimCheque()">Claim</button>
         </div>
     </div>
 </body>

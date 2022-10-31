@@ -1,11 +1,10 @@
 const tonweb = new window.TonWeb()
 
-const cheque_code = 'B5EE9C72410102010045000114FF00F4A413F4BCF2C80B01006CD33331D0D3030171B0915BE0FA4030ED44D0D3FF3002F90112BAF2E06470208016C8CB055003CF1621FA0212CB6ACB00C98100A0FB008408884A'
+const cheque_code = 'B5EE9C72410102010040000114FF00F4A413F4BCF2C80B010062D33331D0D30331FA4030ED44D0D3FF3002F90212BAF2E06470208010C8CB055003CF1621FA0212CB6ACB00C98100A0FB003850B03B'
 const code = tonweb.boc.Cell.oneFromBoc(cheque_code)
 
 async function hashText (text) {
-    const textBuffer = new TextEncoder().encode(text)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', textBuffer)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', tonweb.utils.base64ToBytes(text))
     return new Uint8Array(hashBuffer)
 }
 
@@ -39,8 +38,18 @@ async function createCheque () {
     await deployCheque(address, stateInit, value)
 }
 
+async function claimCheque () {
+    const address = $('#address')[0].value
+    const password = $('#password')[0].value
+
+    await ton.send('ton_sendTransaction', [{
+        value: '10000000',
+        to: address,
+        data: password,
+        dataType: 'base64'
+    }])
+}
+
 window.onload = (event) => {
-    var buf = new Uint8Array(20)
-    crypto.getRandomValues(buf)
-    $('#password')[0].value = tonweb.utils.bytesToBase64(buf)
+    window.onLoadFunction()
 }

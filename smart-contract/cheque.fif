@@ -15,35 +15,30 @@ PROGRAM{
     s3 POP
     NIP	//  in_msg_body in_msg_full
     CTOS	//  in_msg_body cs
-    4 LDU	//  in_msg_body flags cs
-    SWAP
-    1 PUSHINT	//  in_msg_body cs flags _10=1
-    AND	//  in_msg_body cs _11
-    IFJMP:<{	//  in_msg_body cs
-      2DROP	// 
-    }>	//  in_msg_body cs
-    LDMSGADDR	//  in_msg_body _56 _55
+    4 LDU	//  in_msg_body _49 _48
+    NIP	//  in_msg_body cs
+    LDMSGADDR	//  in_msg_body _51 _50
     DROP	//  in_msg_body sender_address
     load_hash INLINECALLDICT	//  in_msg_body sender_address correct_hash
     s0 s2 XCHG	//  correct_hash sender_address in_msg_body
-    HASHSU	//  correct_hash sender_address hash
+    SHA256U	//  correct_hash sender_address hash
     s1 s2 XCHG	//  sender_address correct_hash hash
-    EQUAL	//  sender_address _22
+    EQUAL	//  sender_address _17
     100 THROWIFNOT
-    0 PUSHINT	//  sender_address _25=0
-    DUP	//  sender_address _25=0 _26=0
-    22 PUSHINT	//  sender_address _25=0 _26=0 _27=22
-    NEWC	//  sender_address _25=0 _26=0 _27=22 _28
-    6 STU	//  sender_address _25=0 _26=0 _30
-    s0 s3 XCHG2	//  _26=0 _25=0 _30 sender_address
-    STSLICER	//  _26=0 _25=0 _31
-    OVER	//  _26=0 _25=0 _31 _32=0
-    STGRAMS	//  _26=0 _25=0 _33
-    s1 s2 XCHG	//  _25=0 _26=0 _33
-    107 STU	//  _25=0 _47
-    1 STU	//  _49
+    0 PUSHINT	//  sender_address _20=0
+    DUP	//  sender_address _20=0 _21=0
+    16 PUSHINT	//  sender_address _20=0 _21=0 _22=16
+    NEWC	//  sender_address _20=0 _21=0 _22=16 _23
+    6 STU	//  sender_address _20=0 _21=0 _25
+    s0 s3 XCHG2	//  _21=0 _20=0 _25 sender_address
+    STSLICER	//  _21=0 _20=0 _26
+    OVER	//  _21=0 _20=0 _26 _27=0
+    STGRAMS	//  _21=0 _20=0 _28
+    s1 s2 XCHG	//  _20=0 _21=0 _28
+    107 STU	//  _20=0 _42
+    1 STU	//  _44
     ENDC	//  msg
-    160 PUSHINT	//  msg _51=160
+    160 PUSHINT	//  msg _46=160
     SENDRAWMSG
   }>
 }END>c
