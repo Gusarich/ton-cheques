@@ -26,20 +26,22 @@ PROGRAM{
     CHKSIGNU	//  in_msg _9
     34 THROWIFNOT
     ACCEPT
-    0 PUSHINT	//  in_msg _13=0
-    DUP	//  in_msg _13=0 _14=0
-    16 PUSHINT	//  in_msg _13=0 _14=0 _15=16
-    NEWC	//  in_msg _13=0 _14=0 _15=16 _16
-    6 STU	//  in_msg _13=0 _14=0 _18
-    s0 s3 XCHG2	//  _14=0 _13=0 _18 in_msg
-    STSLICER	//  _14=0 _13=0 _19
-    OVER	//  _14=0 _13=0 _19 _20=0
-    STGRAMS	//  _14=0 _13=0 _21
-    s1 s2 XCHG	//  _13=0 _14=0 _21
-    107 STU	//  _13=0 _35
-    1 STU	//  _37
+    32 LDU	//  _47 _46
+    NIP	//  in_msg
+    0 PUSHINT	//  in_msg _16=0
+    DUP	//  in_msg _16=0 _17=0
+    16 PUSHINT	//  in_msg _16=0 _17=0 _18=16
+    NEWC	//  in_msg _16=0 _17=0 _18=16 _19
+    6 STU	//  in_msg _16=0 _17=0 _21
+    s0 s3 XCHG2	//  _17=0 _16=0 _21 in_msg
+    STSLICER	//  _17=0 _16=0 _22
+    OVER	//  _17=0 _16=0 _22 _23=0
+    STGRAMS	//  _17=0 _16=0 _24
+    s1 s2 XCHG	//  _16=0 _17=0 _24
+    107 STU	//  _16=0 _38
+    1 STU	//  _40
     ENDC	//  msg
-    160 PUSHINT	//  msg _39=160
+    160 PUSHINT	//  msg _42=160
     SENDRAWMSG
   }>
 }END>c

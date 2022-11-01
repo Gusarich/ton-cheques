@@ -8,12 +8,13 @@
 }
 
 () recv_external (slice in_msg) impure {
-    in_msg~load_uint(32);
     var signature = in_msg~load_bits(512);
     var public_key = load_public_key();
 
     throw_unless(34, check_signature(slice_hash(in_msg), signature, public_key));
     accept_message();
+    
+    in_msg~load_uint(32);
     
     var msg = begin_cell()
         .store_uint(0x10, 6)
