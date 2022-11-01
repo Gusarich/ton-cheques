@@ -13,7 +13,7 @@
             const queryString = window.location.search
             const urlParams = new URLSearchParams(queryString)
             $('#address')[0].value = urlParams.get('address')
-            $('#password')[0].value = urlParams.get('password')
+            $('#key')[0].value = urlParams.get('key')
         }
     </script>
     <link rel="stylesheet" href="style.css">
@@ -26,7 +26,7 @@
             Address: <input type="text" name="address" id="address">
         </div>
         <div>
-            Password: <input type="text" name="password" id="password">
+            Key: <input type="text" name="key" id="key">
         </div>
         <div>
             <button class="cheque-button" onclick="claimCheque()">Claim</button>

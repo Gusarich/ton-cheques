@@ -1,6 +1,7 @@
 const tonweb = new window.TonWeb()
+const nacl = TonWeb.utils.nacl
 
-const cheque_code = 'B5EE9C72410102010040000114FF00F4A413F4BCF2C80B010062D33331D0D30331FA4030ED44D0D3FF3002F90212BAF2E06470208010C8CB055003CF1621FA0212CB6ACB00C98100A0FB003850B03B'
+const cheque_code = 'B5EE9C72410104010047000114FF00F4A413F4BCF2C80B0102012002030004D230005EF28308D718ED44D0D3FF3021F9014033F910F2A2F80070208010C8CB055003CF1621FA0212CB6ACB00C98100A0FB003A193835'
 const code = tonweb.boc.Cell.oneFromBoc(cheque_code)
 
 async function hashText (text) {
@@ -17,11 +18,13 @@ async function deployCheque (address, stateInit, value) {
 }
 
 async function createCheque () {
-    const password = $('#password')[0].value
+    const key = $('#key')[0].value
     const value = tonweb.utils.toNano($('#value')[0].value)
+
+    const keyPair = nacl.sign.keyPair.fromSecretKey(tonweb.utils.base64ToBytes(key))
     
     var data = new tonweb.boc.Cell()
-    data.bits.writeBytes(await hashText(password))
+    data.bits.writeBytes(keyPair.publicKey)
 
     var stateInit = new tonweb.boc.Cell()
     stateInit.bits.writeBit(0)
@@ -40,14 +43,40 @@ async function createCheque () {
 
 async function claimCheque () {
     const address = $('#address')[0].value
-    const password = $('#password')[0].value
+    const key = $('#key')[0].value
 
-    await ton.send('ton_sendTransaction', [{
-        value: '10000000',
-        to: address,
-        data: password,
-        dataType: 'base64'
-    }])
+    const keyPair = nacl.sign.keyPair.fromSecretKey(tonweb.utils.base64ToBytes(key))
+    const myAddress = (await ton.send('ton_requestAccounts'))[0]
+
+    var body = new tonweb.boc.Cell()
+    body.bits.writeUint(0, 32)
+    body.bits.writeAddress(new tonweb.Address(myAddress))
+    console.log(body)
+    
+    const bodyHash = await body.hash()
+    const signature = nacl.sign.detached(bodyHash, keyPair.secretKey)
+    console.log(signature)
+    
+    var bodySigned = new tonweb.boc.Cell()
+    bodySigned.bits.writeBytes(signature)
+    bodySigned.writeCell(body)
+
+    console.log(bodySigned)
+
+    var msg = new tonweb.boc.Cell()
+    msg.bits.writeUint(2, 2)
+    msg.bits.writeAddress(undefined)
+    msg.bits.writeAddress(new tonweb.Address(address))
+    msg.bits.writeCoins(0)
+    msg.bits.writeBit(0)
+    msg.bits.writeBit(1)
+    msg.refs.push(bodySigned)
+
+    console.log(msg)
+
+    await tonweb.sendBoc(
+        await msg.toBoc(false)
+    )
 }
 
 window.onload = (event) => {

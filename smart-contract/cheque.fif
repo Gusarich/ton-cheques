@@ -1,9 +1,10 @@
 "Asm.fif" include
 // automatically generated from `stdlib.fc` `cheque.fc` 
 PROGRAM{
-  DECLPROC load_hash
+  DECLPROC load_public_key
   DECLPROC recv_internal
-  load_hash PROCINLINE:<{
+  DECLPROC recv_external
+  load_public_key PROCINLINE:<{
     // 
     c4 PUSH	//  _1
     CTOS	//  ds
@@ -11,34 +12,34 @@ PROGRAM{
     DROP	//  _3
   }>
   recv_internal PROC:<{
-    //  my_balance msg_value in_msg_full in_msg_body
-    s3 POP
-    NIP	//  in_msg_body in_msg_full
-    CTOS	//  in_msg_body cs
-    4 LDU	//  in_msg_body _49 _48
-    NIP	//  in_msg_body cs
-    LDMSGADDR	//  in_msg_body _51 _50
-    DROP	//  in_msg_body sender_address
-    load_hash INLINECALLDICT	//  in_msg_body sender_address correct_hash
-    s0 s2 XCHG	//  correct_hash sender_address in_msg_body
-    SHA256U	//  correct_hash sender_address hash
-    s1 s2 XCHG	//  sender_address correct_hash hash
-    EQUAL	//  sender_address _17
-    100 THROWIFNOT
-    0 PUSHINT	//  sender_address _20=0
-    DUP	//  sender_address _20=0 _21=0
-    16 PUSHINT	//  sender_address _20=0 _21=0 _22=16
-    NEWC	//  sender_address _20=0 _21=0 _22=16 _23
-    6 STU	//  sender_address _20=0 _21=0 _25
-    s0 s3 XCHG2	//  _21=0 _20=0 _25 sender_address
-    STSLICER	//  _21=0 _20=0 _26
-    OVER	//  _21=0 _20=0 _26 _27=0
-    STGRAMS	//  _21=0 _20=0 _28
-    s1 s2 XCHG	//  _20=0 _21=0 _28
-    107 STU	//  _20=0 _42
-    1 STU	//  _44
+    //  in_msg
+    DROP	// 
+  }>
+  recv_external PROC:<{
+    //  in_msg
+    9 PUSHPOW2	//  in_msg _3=512
+    LDSLICEX	//  signature in_msg
+    load_public_key INLINECALLDICT	//  signature in_msg public_key
+    OVER	//  signature in_msg public_key in_msg
+    HASHSU	//  signature in_msg public_key _8
+    s0 s3 s3 XCHG3	//  in_msg _8 signature public_key
+    CHKSIGNU	//  in_msg _9
+    34 THROWIFNOT
+    ACCEPT
+    0 PUSHINT	//  in_msg _13=0
+    DUP	//  in_msg _13=0 _14=0
+    16 PUSHINT	//  in_msg _13=0 _14=0 _15=16
+    NEWC	//  in_msg _13=0 _14=0 _15=16 _16
+    6 STU	//  in_msg _13=0 _14=0 _18
+    s0 s3 XCHG2	//  _14=0 _13=0 _18 in_msg
+    STSLICER	//  _14=0 _13=0 _19
+    OVER	//  _14=0 _13=0 _19 _20=0
+    STGRAMS	//  _14=0 _13=0 _21
+    s1 s2 XCHG	//  _13=0 _14=0 _21
+    107 STU	//  _13=0 _35
+    1 STU	//  _37
     ENDC	//  msg
-    160 PUSHINT	//  msg _46=160
+    160 PUSHINT	//  msg _39=160
     SENDRAWMSG
   }>
 }END>c

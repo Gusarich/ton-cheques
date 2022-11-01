@@ -8,6 +8,10 @@ body {
     font-family: 'Mulish', sans-serif;
 }
 
+input {
+    cursor: text;
+}
+
 h1 {
     margin: 30px;
 }

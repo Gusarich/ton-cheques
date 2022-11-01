@@ -10,9 +10,8 @@
     <script src="main.js"></script>
     <script>
         async function onLoadFunction () {
-            var buf = new Uint8Array(20)
-            crypto.getRandomValues(buf)
-            $('#password')[0].value = tonweb.utils.bytesToBase64(buf)
+            const keyPair = nacl.sign.keyPair()
+            $('#key')[0].value = tonweb.utils.bytesToBase64(keyPair.secretKey)
         }
     </script>
     <link rel="stylesheet" href="style.css">
@@ -22,7 +21,7 @@
     <h1>TON Cheques</h1>
     <div class="cheque">
         <div>
-            Password: <input type="text" name="password" id="password">
+            Key: <input type="text" name="key" id="key">
         </div>
         <div>
             Value: <input type="text" name="value" id="value">
