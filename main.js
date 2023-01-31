@@ -1,8 +1,8 @@
 const tonweb = new window.TonWeb()
 const nacl = TonWeb.utils.nacl
 
-const cheque_code = 'B5EE9C7241010401004A000114FF00F4A413F4BCF2C80B0102012002030004D2300064F28308D718ED44D0D3FF3021F9014033F910F2A2F800D31F3170208010C8CB055003CF1621FA0212CB6ACB00C98100A0FB0041229B70'
-const code = tonweb.boc.Cell.oneFromBoc(cheque_code)
+const cheque_code = 'te6ccgEBBAEARwABFP8A9KQT9LzyyAsBAgEgAgMABNIwAF7ygwjXGO1E0NP/MCH5AUAz+RDyovgAcCCAEMjLBVADzxYh+gISy2rLAMmBAKD7AA=='
+const code = tonweb.boc.Cell.oneFromBoc(tonweb.utils.bytesToHex(tonweb.utils.base64ToBytes(cheque_code)))
 
 async function hashText (text) {
     const hashBuffer = await crypto.subtle.digest('SHA-256', tonweb.utils.base64ToBytes(text))
@@ -49,7 +49,6 @@ async function claimCheque () {
     const myAddress = (await ton.send('ton_requestAccounts'))[0]
 
     var body = new tonweb.boc.Cell()
-    body.bits.writeUint(0, 32)
     body.bits.writeAddress(new tonweb.Address(myAddress))
     console.log(body)
     

@@ -1,8 +1,0 @@
-#!/usr/bin/fift -s
-"TonUtil.fif" include
-"Asm.fif" include
-
-."Compiled Hex:" cr
-
-"cheque.fif" include
-2 boc+>B dup Bx. cr

@@ -1,3 +1,0 @@
-storage#_ public_key:bits256 = Storage;
-claimOpcode#00000000 = ClaimOpcode;
-claimMessageBody#_ opcode:ClaimOpcode signature:bits512 destination:MsgAddressInt = ClaimMessageBody;

@@ -1,0 +1,2 @@
+storage#_ public_key:bits256 = Storage;
+claim#_ signature:bits512 destination:MsgAddressInt = ExternalMsgBody;
