@@ -14,4 +14,5 @@ npx func-js stdlib.fc cheque.fc --boc-base64 cheque.base64
 ## Using the Web UI
 
 You can use the Github pages version:
- - TODO
+ - https://gusarich.github.io/ton-cheques
+ - https://gusarich.github.io/ton-cheques/claim.html
